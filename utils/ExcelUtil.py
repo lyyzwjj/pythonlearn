@@ -1,6 +1,7 @@
 import xlrd
 import xlwt
 import copy
+import json
 
 
 class ColumnKey:
@@ -16,9 +17,6 @@ class ColumnKey:
 class ExcelUtil:
     def __init__(self, simple_mode=True):
         self.simple_mode = simple_mode
-
-    def a(self):
-        print()
 
     def list2excel_file(self, column_keys, data, name, sheet_name="Sheet1", path="../resources/excel/"):
         # 创建一个workbook 设置编码
@@ -37,7 +35,8 @@ class ExcelUtil:
 
         workbook.save(path + name + '.xls')
 
-    def excel_file2list(self, column_keys, file_path, sheet_name=None, sheet_no=0):
+    @classmethod
+    def excel_file2list(cls, column_keys, file_path, sheet_name=None, sheet_no=0):
         result_list = []
         wb = xlrd.open_workbook(file_path)
         if sheet_name is not None and sheet_name.strip() != "":
@@ -59,6 +58,12 @@ class ExcelUtil:
             result_list.append(entity)
         return result_list
 
+    @classmethod
+    def excel_file2json_file(cls, column_keys, file_path, json_file_name, sheet_name=None, sheet_no=0,
+                             path="../resources/excel/"):
+        result_list = cls.excel_file2list(column_keys, file_path, sheet_name, sheet_no)
+        with open(path + json_file_name, 'w') as f:
+            json.dump(result_list, f, indent=4)
 
 # if __name__ == '__main__':
 #     eu = ExcelUtil()
@@ -86,4 +91,5 @@ class ExcelUtil:
 #         }
 #     ]
 #     # eu.list2excel_file(column_keys, data, "person")
-#     print(eu.excel_file2list(column_keys, "../resources/excel/person.xls"))
+#     eu.excel_file2json_file(column_keys, "../resources/excel/person.xls", "person.json")
+#     # print(eu.excel_file2list(column_keys, "../resources/excel/person.xls"))
