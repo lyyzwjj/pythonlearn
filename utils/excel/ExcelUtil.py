@@ -91,5 +91,5 @@ class ExcelUtil:
 #         }
 #     ]
 #     # eu.list2excel_file(column_keys, data, "person")
-#     eu.excel_file2json_file(column_keys, "../resources/excel/person.xls", "person.json")
+#     eu.excel_file2json_file(column_keys, "../resources/excel/person.xls", "person.myjson")
 #     # print(eu.excel_file2list(column_keys, "../resources/excel/person.xls"))
