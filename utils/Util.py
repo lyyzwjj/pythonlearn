@@ -59,11 +59,29 @@ def def2():
     return ExcelUtil.excel_file2list(column_keys, file_path="../resources/excel/太平优视文章-20200225-2.xlsx")
 
 
+def def3():
+    column_keys = []
+    column_key1 = ColumnKey("保单归属", 1, "保单归属")
+    column_key2 = ColumnKey("数量", 2, "数量")
+    column_keys.append(column_key1)
+    column_keys.append(column_key2)
+    return column_keys
+
+
+def list2excel_file(file_name, column_keys_list, json_file_path=None, data=None):
+    column_keys = []
+    for index, column_key_list in enumerate(column_keys_list):
+        if len(column_key_list) < 2:
+            column_key = ColumnKey(column_key_list[0], index)
+        else:
+            column_key = ColumnKey(column_key_list[0], index, column_key_list[1])
+        column_keys.insert(index, column_key)
+    if data is None and json_file_path is not None:
+        data = json.load(open(json_file_path, encoding='utf-8'))
+    eu = ExcelUtil()
+    eu.list2excel_file(column_keys, data, file_name)
+
+
 if __name__ == '__main__':
-    objs = def2()
-    sql_proto = "update campaigns.t_topic set link_path = '%s', tag_url = '%s' where id = %d;"
-    # sql_proto = "%s, %s"
-    for obj in objs:
-        if obj['new_page_type'] is not None and obj['new_page_type'].strip() != '':
-            print(sql_proto % (obj['new_page_type'], obj['new_page_type'], obj['id']))
-            # print(sql_proto % (obj['name'], obj['title']))
+    new_column_keys_list = [["userid", "用户id"], ["first_login_time", "首次登陆时间"]]
+    list2excel_file("第三方机构邀请用户表", new_column_keys_list, "../resources/excel/mdmuser.json", )
