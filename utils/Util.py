@@ -84,4 +84,4 @@ def list2excel_file(file_name, column_keys_list, json_file_path=None, data=None)
 
 if __name__ == '__main__':
     new_column_keys_list = [["userid", "用户id"], ["first_login_time", "首次登陆时间"]]
-    list2excel_file("第三方机构邀请用户表", new_column_keys_list, "../resources/excel/mdmuser.json", )
+    list2excel_file("第三方机构邀请用户表", new_column_keys_list, "../resources/excel/mdmuser.json")
