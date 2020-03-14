@@ -68,6 +68,21 @@ def def3():
     return column_keys
 
 
+def def4():
+    column_keys = []
+    column_key1 = ColumnKey("JOB_CODE", 1, "JOB_CODE")
+    column_key2 = ColumnKey("CLASS_1", 2, "CLASS_1")
+    column_key3 = ColumnKey("CLASS_2", 3, "CLASS_2")
+    column_key4 = ColumnKey("CLASS_3", 4, "CLASS_3")
+    column_key5 = ColumnKey("NAME", 5, "职业")
+    column_keys.append(column_key1)
+    column_keys.append(column_key2)
+    column_keys.append(column_key3)
+    column_keys.append(column_key4)
+    column_keys.append(column_key5)
+    ExcelUtil.excel_file2json_file(column_keys, '../resources/excel/职业代码 .xlsx', 'job.json')
+
+
 def list2excel_file(file_name, column_keys_list, json_file_path=None, data=None):
     column_keys = []
     for index, column_key_list in enumerate(column_keys_list):
@@ -83,5 +98,6 @@ def list2excel_file(file_name, column_keys_list, json_file_path=None, data=None)
 
 
 if __name__ == '__main__':
-    new_column_keys_list = [["userid", "用户id"], ["first_login_time", "首次登陆时间"]]
-    list2excel_file("第三方机构邀请用户表", new_column_keys_list, "../resources/excel/mdmuser.json")
+    # new_column_keys_list = [["userid", "用户id"], ["first_login_time", "首次登陆时间"]]
+    # list2excel_file("第三方机构邀请用户表", new_column_keys_list, "../resources/excel/mdmuser.json")
+    def4()
