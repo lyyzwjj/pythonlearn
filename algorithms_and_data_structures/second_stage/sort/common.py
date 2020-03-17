@@ -46,3 +46,35 @@ class Asserts:
                 raise Exception("测试未通过")
         except Exception as result:
             print("%s" % result)
+
+
+class Entity:
+    def __init__(self, score, age):
+        self.score = score
+        self.age = age
+
+    def __eq__(self, other):
+        return self.score == other.score
+
+    def __ne__(self, other):
+        return self.score != other.score
+
+    def __gt__(self, other):  # 大于函数
+        result = 1 if self.score > other.score else 0
+        return result
+
+    def __ge__(self, other):  # 大于等于
+        result = 1 if self.score >= other.score else 0
+        return result
+
+    def __lt__(self, other):  # 小于
+        result = 1 if self.score < other.score else 0
+        return result
+
+    def __le__(self, other):  # 小于等于
+        result = 1 if self.score <= other.score else 0
+        return result
+
+    def __sub__(self, other):
+        result = 0 if self.score != other.score else 1 if self.score < other.score else -1
+        return result

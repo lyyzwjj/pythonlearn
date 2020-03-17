@@ -1,6 +1,6 @@
-from algorithms_and_data_structures.second_stage.a_common import Integers, Asserts
-from algorithms_and_data_structures.second_stage.b_bubble_sort import BubbleSort
 import json
+from algorithms_and_data_structures.second_stage.sort.common import *
+from algorithms_and_data_structures.second_stage.sort.sort import *
 
 
 def test_sort(array, sorts):
@@ -15,7 +15,7 @@ def test_sort(array, sorts):
 
 
 if __name__ == '__main__':
-    # proto_array = Integers.random(10000, 1, 20000)
+    proto_array = Integers.random(1000, 1, 2000)
     # json.dump(proto_array, open('../../resources/array.json', 'w'))
-    proto_array = json.load(open('../../resources/array.json', 'r'))
-    test_sort(proto_array, [BubbleSort()])
+    # proto_array = json.load(open('../../resources/array.json', 'r'))
+    test_sort(proto_array, [BubbleSort(), SelectSort(), InsertSort()])
