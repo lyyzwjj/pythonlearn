@@ -83,6 +83,45 @@ def def4():
     ExcelUtil.excel_file2json_file(column_keys, '../resources/excel/职业代码 .xlsx', 'job.json')
 
 
+def def5():
+    column_keys = []
+    column_key1 = ColumnKey("nationalCode", 1, "国籍代码")
+    column_key2 = ColumnKey("nation", 2, "国籍")
+    column_keys.append(column_key1)
+    column_keys.append(column_key2)
+    ExcelUtil.excel_file2json_file(column_keys, '../resources/excel/省市区国籍.xlsx', 'nation.json', sheet_name='国籍')
+
+def def6():
+    column_keys = []
+    column_key1 = ColumnKey("provinceCode", 1, "省代码")
+    column_key2 = ColumnKey("provinceName", 2, "省")
+    column_keys.append(column_key1)
+    column_keys.append(column_key2)
+    ExcelUtil.excel_file2json_file(column_keys, '../resources/excel/省市区国籍.xlsx', 'province.json', sheet_name='省')
+
+
+def def7():
+    column_keys = []
+    column_key1 = ColumnKey("provinceCode", 1, "所属省代码")
+    column_key2 = ColumnKey("cityCode", 2, "市代码")
+    column_key3 = ColumnKey("cityName", 3, "市")
+    column_keys.append(column_key1)
+    column_keys.append(column_key2)
+    column_keys.append(column_key3)
+    ExcelUtil.excel_file2json_file(column_keys, '../resources/excel/省市区国籍.xlsx', 'city.json', sheet_name='市')
+
+
+def def8():
+    column_keys = []
+    column_key1 = ColumnKey("cityCode", 1, "所属市代码")
+    column_key2 = ColumnKey("districtCode", 2, "区代码")
+    column_key3 = ColumnKey("districtName", 3, "区")
+    column_keys.append(column_key1)
+    column_keys.append(column_key2)
+    column_keys.append(column_key3)
+    ExcelUtil.excel_file2json_file(column_keys, '../resources/excel/省市区国籍.xlsx', 'district.json', sheet_name='区')
+
+
 def list2excel_file(file_name, column_keys_list, json_file_path=None, data=None):
     column_keys = []
     for index, column_key_list in enumerate(column_keys_list):
@@ -100,4 +139,4 @@ def list2excel_file(file_name, column_keys_list, json_file_path=None, data=None)
 if __name__ == '__main__':
     # new_column_keys_list = [["userid", "用户id"], ["first_login_time", "首次登陆时间"]]
     # list2excel_file("第三方机构邀请用户表", new_column_keys_list, "../resources/excel/mdmuser.json")
-    def4()
+    def8()
