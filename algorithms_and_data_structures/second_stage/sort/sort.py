@@ -139,7 +139,8 @@ class SelectSort(AbstractSort):
 
 
 class AbstractHeap():
-    def __init__(self, my_operator=None):
+    def __init__(self, size=0, my_operator=None):
+        self.size = size
         if my_operator is not None:
             self.operator = my_operator
         else:
@@ -182,32 +183,136 @@ class AbstractHeap():
 
 
 class BinaryHeap(AbstractHeap):
+    __default_capacity = 10
 
     def __init__(self, elements=None, my_compator=None):
         super(BinaryHeap, self).__init__(my_compator)
-        if elements is None:
-            self.elements = []
+        if elements is None or len(elements) == 0:
+            self.elements = [None] * self.__default_capacity
         else:
             self.size = len(elements)
+            capacity = max(self.__default_capacity, self.size)
+            self.elements = [None] * capacity
+            i = 0
+            while i < len(elements):
+                self.elements[i] = elements[i]
+                i = i + 1
+            self.elements = elements
 
     def clear(self):
+        self.elements = []
+        self.size = 0
 
     def add(self, element):
-        pass
+        self.__element_not_none_check(element)
+        self.ensure_capacity(self.size + 1)
+        self.size = self.size + 1
+        self.elements[self.size] = element
+        self.__sift_up(self.size - 1)
 
     def get(self):
-        pass
+        self.__empty_check()
+        return self.elements[0]
 
     def remove(self):
-        pass
+        self.__empty_check()
+        last_index = self.size
+        self.size = self.size - 1
+        root = self.elements[0]
+        self.elements[0] = self.elements(last_index)
+        self.elements[last_index] = None
+        self.__sift_down(0)
+        return root
 
     def replace(self, element):
-        pass
+        self.__element_not_none_check(element)
+        root = None
+        if self.size == 0:
+            self.elements[0] = element
+            self.size = self.size + 1
+        else:
+            root = self.elements[0]
+            self.elements[0] = element
+            self.__sift_down(0)
+        return root
+
+    # 批量建堆
+    def heapify(self):
+        # 自上而下的上滤 每次向最后插入元素 上滤
+        """
+        i = 1
+        while i < self.size:
+            self.__sift_up(i)
+            i = i + 1
+        """
+        i = self.size >> 1
+        while i >= 0:
+            self.__sift_down(i)
+            i = i - 1
+
+    # 从这个元素开始上滤
+    def __sift_up(self, index):
+        element = self.elements[index]
+        while index > 0:
+            parent_index = (index - 1) >> 1  # 完全二叉树性质 float((n-1)/2)
+            parent = self.elements[parent_index]
+            if self.compare(element, parent) <= 0:  # 大堆
+                # if self.compare(parent, element) <= 0:  # 小堆
+                break
+            self.elements[index] = parent
+            index = parent_index
+        element[index] = element
+
+    # 从这个元素开始下滤
+    def __sift_down(self, index):
+        element = self.elements[index]
+        # 小于第一个叶子的索引(即非叶子节点的数量)
+        # 必须保证index位置不是叶子节点
+        half = self.size >> 1
+        while index < half:
+            # index 的节点有两种情况
+            # 1.只有左子节点
+            # 2.同时有左右子节点
+            child_index = (index << 1) + 1
+            child = self.elements[child_index]
+            right_index = child_index + 1
+            # 不能在此处直接取右子节点 可能为空 索引越界  self.elements[right_index]
+            # 如果有右子节点 并且右子节点比左子节点大 那么选择 大的右子节点去和父节点比较
+            # 选出左右子节点最大的那个
+            if right_index < self.size and self.compare(self.elements[right_index], child) > 0:  # 大堆 就要挑大的去比价
+                child_index = right_index
+                child = self.elements[child_index]
+            if self.compare(element, child) >= 0:  # 大堆
+                break
+            # 将子节点存放到index位置
+            self.elements[index] = child
+            # 重新设置index
+            index = child_index
+        self.elements[index] = element
+
+    def __empty_check(self):
+        if self.size == 0:
+            raise Exception("Heap is empty")
+
+    @staticmethod
+    def __element_not_none_check(element):
+        if element is None:
+            raise Exception("element must not be None")
+
+    def __ensure_capacity(self, capacity):
+        old_capacity = len(self.elements)
+        if old_capacity >= capacity:
+            return
+        new_capacity = old_capacity + (old_capacity >> 1)  # 扩大1.5倍
+        new_elements = [None] * new_capacity
+        self.elements = new_elements
+        print("扩容为%d" % new_elements)
 
 
 class HeapSort(AbstractSort):
 
     def sort(self):
+        b = BinaryHeap()
 
 
 class InsertSort(AbstractSort):
