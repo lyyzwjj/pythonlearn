@@ -1,5 +1,6 @@
 import abc
 import time
+import operator
 
 from algorithms_and_data_structures.second_stage.sort.common import Entity
 
@@ -38,6 +39,7 @@ class AbstractSort:
 
     def cmp_element(self, element1, element2):
         self.cmp_count += 1
+
         return element1 - element2
 
     def swap(self, index1, index2):
@@ -134,6 +136,78 @@ class SelectSort(AbstractSort):
                 begin += 1
             self.swap(max_index, end)
             end -= 1
+
+
+class AbstractHeap():
+    def __init__(self, my_operator=None):
+        if my_operator is not None:
+            self.operator = my_operator
+        else:
+            self.operator = operator
+
+    def size(self):
+        return self.size
+
+    def is_empty(self):
+        return self.size == 0
+
+    @abc.abstractmethod
+    def clear(self):
+        pass
+
+    @abc.abstractmethod
+    def add(self, element):
+        pass
+
+    @abc.abstractmethod
+    def get(self):
+        pass
+
+    @abc.abstractmethod
+    def remove(self):
+        pass
+
+    @abc.abstractmethod
+    def replace(self, element):
+        pass
+
+    @staticmethod
+    def compare(e1, e2):
+        if operator.lt(e1, e2):
+            return -1
+        elif operator.gt(e1, e2):
+            return 1
+        else:
+            return 0
+
+
+class BinaryHeap(AbstractHeap):
+
+    def __init__(self, elements=None, my_compator=None):
+        super(BinaryHeap, self).__init__(my_compator)
+        if elements is None:
+            self.elements = []
+        else:
+            self.size = len(elements)
+
+    def clear(self):
+
+    def add(self, element):
+        pass
+
+    def get(self):
+        pass
+
+    def remove(self):
+        pass
+
+    def replace(self, element):
+        pass
+
+
+class HeapSort(AbstractSort):
+
+    def sort(self):
 
 
 class InsertSort(AbstractSort):
