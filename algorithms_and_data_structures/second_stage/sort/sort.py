@@ -138,7 +138,7 @@ class SelectSort(AbstractSort):
             end -= 1
 
 
-class AbstractHeap():
+class AbstractHeap:
     def __init__(self, size=0, my_operator=None):
         self.size = size
         if my_operator is not None:
@@ -205,7 +205,7 @@ class BinaryHeap(AbstractHeap):
 
     def add(self, element):
         self.__element_not_none_check(element)
-        self.ensure_capacity(self.size + 1)
+        self.__ensure_capacity(self.size + 1)
         self.size = self.size + 1
         self.elements[self.size] = element
         self.__sift_up(self.size - 1)
@@ -306,13 +306,51 @@ class BinaryHeap(AbstractHeap):
         new_capacity = old_capacity + (old_capacity >> 1)  # 扩大1.5倍
         new_elements = [None] * new_capacity
         self.elements = new_elements
-        print("扩容为%d" % new_elements)
+        print("扩容为%d" % new_capacity)
 
 
 class HeapSort(AbstractSort):
 
+    def __init__(self, __heap_size=0):
+        super(HeapSort, self).__init__()
+        self.__heap_size = __heap_size
+
     def sort(self):
-        b = BinaryHeap()
+        # 原地建最大堆
+        self.__heap_size = len(self.array)
+        for i in range((self.__heap_size >> 1) - 1, -1, -1):
+            self.__sift_down(i)
+        # 次取出堆的最大值 即array[0] 放到数组后面 然后剩下的重建堆 拿到数组
+        while self.__heap_size > 1:
+            self.__heap_size -= 1
+            self.swap(0, self.__heap_size)
+            # 对0的位置进行sift_down 恢复堆的性质
+            self.__sift_down(0)
+
+    def __sift_down(self, index):
+        element = self.array[index]
+        # 小于第一个叶子的索引(即非叶子节点的数量)
+        # 必须保证index位置不是叶子节点
+        while index < self.__heap_size >> 1:
+            # index 的节点有两种情况
+            # 1.只有左子节点
+            # 2.同时有左右子节点
+            child_index = (index << 1) + 1
+            child = self.array[child_index]
+            right_index = child_index + 1
+            # 不能在此处直接取右子节点 可能为空 索引越界  self.elements[right_index]
+            # 如果有右子节点 并且右子节点比左子节点大 那么选择 大的右子节点去和父节点比较
+            # 选出左右子节点最大的那个
+            if right_index < self.__heap_size and self.cmp_element(self.array[right_index], child) > 0:  # 大堆 就要挑大的去比价
+                child_index = right_index
+                child = self.array[child_index]
+            if self.cmp_element(element, child) >= 0:  # 大堆
+                break
+            # 将子节点存放到index位置
+            self.array[index] = child
+            # 重新设置index
+            index = child_index
+        self.array[index] = element
 
 
 class InsertSort(AbstractSort):
@@ -320,7 +358,8 @@ class InsertSort(AbstractSort):
         begin = 1
         while begin < len(self.array):
             cur = begin
-            while cur > 0 and self.cmp(cur, cur - 1) < 0:
+            # while cur > 0 and self.cmp(cur, cur - 1) < 0:
+            while cur > 0 and not self.cmp(cur, cur - 1) >= 0:
                 self.swap(cur, cur - 1)
                 cur -= 1
             begin += 1

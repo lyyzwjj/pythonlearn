@@ -15,7 +15,8 @@ def test_sort(array, sorts):
 
 
 if __name__ == '__main__':
-    proto_array = Integers.random(1000, 1, 2000)
+    proto_array = Integers.random(1000, 1, 1000)
     # json.dump(proto_array, open('../../resources/array.json', 'w'))
     # proto_array = json.load(open('../../resources/array.json', 'r'))
-    test_sort(proto_array, [BubbleSort(), SelectSort(), InsertSort()])
+    # test_sort(proto_array, [BubbleSort(), SelectSort(), InsertSort()])
+    test_sort(proto_array, [BubbleSort(), SelectSort(), HeapSort()])
