@@ -19,4 +19,4 @@ if __name__ == '__main__':
     # json.dump(proto_array, open('../../resources/array.json', 'w'))
     # proto_array = json.load(open('../../resources/array.json', 'r'))
     # test_sort(proto_array, [BubbleSort(), SelectSort(), InsertSort()])
-    test_sort(proto_array, [BubbleSort(), SelectSort(), HeapSort()])
+    test_sort(proto_array, [BubbleSort(), SelectSort(), HeapSort(), InsertSort()])

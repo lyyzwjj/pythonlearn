@@ -355,11 +355,34 @@ class HeapSort(AbstractSort):
 
 class InsertSort(AbstractSort):
     def sort(self):
-        begin = 1
-        while begin < len(self.array):
+        # self.sort1()
+        self.sort2()
+
+    def sort1(self):
+        for begin in range(1, len(self.array), 1):
             cur = begin
-            # while cur > 0 and self.cmp(cur, cur - 1) < 0:
             while cur > 0 and not self.cmp(cur, cur - 1) >= 0:
                 self.swap(cur, cur - 1)
                 cur -= 1
-            begin += 1
+
+    # 因为前面是有序的故可以采用二分搜索法来找到应该插入的位置
+    def sort2(self):
+        for i in range(1, len(self.array), 1):
+            self.insert(i, self.search(i))
+
+    def insert(self, source, dist):
+        element = self.array[source]
+        for i in range(source, dist, -1):
+            self.array[i] = self.array[i - 1]
+        self.array[dist] = element
+
+    def search(self, index):
+        begin = 0
+        end = index
+        while begin < end:
+            mid = (begin + end) >> 1
+            if self.cmp(index, mid) < 0:
+                end = mid
+            else:
+                begin = mid + 1
+        return begin
