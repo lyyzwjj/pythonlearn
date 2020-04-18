@@ -12,14 +12,14 @@ class AbstractSort:
         self.swap_count = swap_count
         self.sort_time = sort_time
 
-    def compare_to(self, abstract_sort):
-        result = self.sort_time - abstract_sort.time
-        if result != 0:
-            return result
-        result = self.cmp_count - abstract_sort.cmp_count
-        if result != 0:
-            return result
-        return self.swap_count - abstract_sort.swap_cout
+    # def compare_to(self, abstract_sort):
+    #     result = self.sort_time - abstract_sort.time
+    #     if result != 0:
+    #         return result
+    #     result = self.cmp_count - abstract_sort.cmp_count
+    #     if result != 0:
+    #         return result
+    #     return self.swap_count - abstract_sort.swap_cout
 
     @abc.abstractmethod
     def sort(self):
@@ -69,6 +69,29 @@ class AbstractSort:
             index += 1
         return True
 
+    @staticmethod
+    def compare_sort():
+        def compare_to(sort1, sort2):
+            result = sort1.sort_time - sort2.sort_time
+            if result != 0:
+                return result
+            result = sort1.cmp_count - sort2.cmp_count
+            if result != 0:
+                return result
+            return sort1.swap_count - sort2.swap_count
+
+        return compare_to
+
+    # @staticmethod
+    # def compare_to(sort1, sort2):
+    #     result = sort1.time - sort2.time
+    #     if result != 0:
+    #         return result
+    #     result = sort1.cmp_count - sort2.cmp_count
+    #     if result != 0:
+    #         return result
+    #     return sort1.swap_count - sort2.swap_count
+
     def __str__(self):
         time_str = "耗时：" + str((self.sort_time / 1000000000.0)) + "s(" + str(self.sort_time / 1000000.0) + "ms)"
         compare_count_str = "比较：" + AbstractSort.number_string(self.cmp_count)
@@ -78,7 +101,7 @@ class AbstractSort:
                + "\n" + "------------------------------------------------------------------"
 
 
-class BubbleSort(AbstractSort):
+class BBubbleSort(AbstractSort):
     def sort(self):
         self.sort3()
 
@@ -124,7 +147,7 @@ class BubbleSort(AbstractSort):
             end = sorted_index - 1  # 每次冒泡判断终止位置应该是最后一次交换位置，而非最后一位每次减一
 
 
-class SelectSort(AbstractSort):
+class CSelectSort(AbstractSort):
     def sort(self):
         end = len(self.array) - 1
         while end > 0:
@@ -138,7 +161,8 @@ class SelectSort(AbstractSort):
             end -= 1
 
 
-class AbstractHeap:
+# 二叉堆抽象类
+class _AbstractHeap:
     def __init__(self, size=0, my_operator=None):
         self.size = size
         if my_operator is not None:
@@ -182,11 +206,12 @@ class AbstractHeap:
             return 0
 
 
-class BinaryHeap(AbstractHeap):
+# 二叉堆
+class _BinaryHeap(_AbstractHeap):
     __default_capacity = 10
 
     def __init__(self, elements=None, my_compator=None):
-        super(BinaryHeap, self).__init__(my_compator)
+        super(_BinaryHeap, self).__init__(my_compator)
         if elements is None or len(elements) == 0:
             self.elements = [None] * self.__default_capacity
         else:
@@ -309,10 +334,10 @@ class BinaryHeap(AbstractHeap):
         print("扩容为%d" % new_capacity)
 
 
-class HeapSort(AbstractSort):
+class DHeapSort(AbstractSort):
 
     def __init__(self, __heap_size=0):
-        super(HeapSort, self).__init__()
+        super(DHeapSort, self).__init__()
         self.__heap_size = __heap_size
 
     def sort(self):
@@ -353,7 +378,7 @@ class HeapSort(AbstractSort):
         self.array[index] = element
 
 
-class InsertSort(AbstractSort):
+class EInsertSort(AbstractSort):
     def sort(self):
         # self.sort1()
         self.sort2()
@@ -386,3 +411,43 @@ class InsertSort(AbstractSort):
             else:
                 begin = mid + 1
         return begin
+
+
+class FMergeSort(AbstractSort):
+    def __init__(self, left_array=None):
+        super(FMergeSort, self).__init__()
+        self.left_array = left_array
+
+    def sort(self):
+        self.sort1()
+
+    def sort1(self):
+        self.left_array = [None] * (len(self.array) >> 1)
+        self.in_sort(0, len(self.array))
+
+    def in_sort(self, begin, end):
+        if end - begin < 2:
+            return
+        mid = (begin + end) >> 1
+        self.in_sort(begin, mid)
+        self.in_sort(mid, end)
+        self.merge(begin, mid, end)
+
+    def merge(self, begin, mid, end):
+        li = 0
+        le = mid - begin
+        ri = mid
+        re = end
+        ai = begin
+        # 拷贝数组
+        for i in range(0, le, 1):
+            self.left_array[i] = self.array[i + begin]
+        while li < le:
+            if ri < re and self.cmp_element(self.array[ri], self.left_array[li]) < 0:
+                self.array[ai] = self.array[ri]
+                ai += 1
+                ri += 1
+            else:
+                self.array[ai] = self.left_array[li]
+                ai += 1
+                li += 1
