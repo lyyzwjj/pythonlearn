@@ -1,6 +1,7 @@
 import abc
 import time
 import operator
+import random
 
 from algorithms_and_data_structures.second_stage.sort.common import Entity
 
@@ -419,9 +420,6 @@ class FMergeSort(AbstractSort):
         self.left_array = left_array
 
     def sort(self):
-        self.sort1()
-
-    def sort1(self):
         self.left_array = [None] * (len(self.array) >> 1)
         self.in_sort(0, len(self.array))
 
@@ -451,3 +449,65 @@ class FMergeSort(AbstractSort):
                 self.array[ai] = self.left_array[li]
                 ai += 1
                 li += 1
+
+
+class GQuickSort(AbstractSort):
+    def sort(self):
+        self.in_sort(0, len(self.array))
+
+    def in_sort(self, begin, end):
+        if end - begin < 2:
+            return
+        pivot = self.pivot_index(begin, end)
+        self.in_sort(begin, pivot)
+        self.in_sort(pivot + 1, end)
+
+    def pivot_index(self, begin, end):
+        #  随机选择一个位置元素和begin进行交换 随机选择轴点 避免最坏情况
+        self.swap(begin, begin + random.randint(0, end - begin - 1))
+        pivot_value = self.array[begin]  # 备份begin元素
+        end -= 1  # end指向最后一个元素
+        while begin < end:
+            while begin < end:
+                if self.cmp_element(pivot_value, self.array[end]) < 0:
+                    end -= 1
+                else:
+                    self.array[begin] = self.array[end]
+                    begin += 1
+                    break
+            while begin < end:
+                if self.cmp_element(pivot_value, self.array[begin]) > 0:
+                    begin += 1
+                else:
+                    self.array[end] = self.array[begin]
+                    end -= 1
+                    break
+        self.array[begin] = pivot_value
+        return begin
+
+
+class HShellSort(AbstractSort):
+    def __init__(self, step_sequence=None):
+        super(HShellSort, self).__init__()
+        self.step_sequence = step_sequence
+
+    def sort(self):
+        self.step_sequence = self.shell_step_sequence()
+        for step in self.step_sequence:
+            self.in_sort(step)
+
+    def in_sort(self, step):
+        for col in range(step):
+            for begin in range(col + step, len(self.array), step):
+                cur = begin
+                while cur > col and self.cmp(cur, cur - step) < 0:
+                    self.swap(cur, cur - step)
+                    cur -= step
+
+    def shell_step_sequence(self):
+        step_sequence = []
+        step = len(self.array)
+        while (step >> 1) > 0:
+            step = step >> 1
+            step_sequence.append(step)
+        return step_sequence
