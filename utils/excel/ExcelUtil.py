@@ -62,7 +62,7 @@ class ExcelUtil:
     def excel_file2json_file(cls, column_keys, file_path, json_file_name, sheet_name=None, sheet_no=0,
                              path="../resources/excel/"):
         result_list = cls.excel_file2list(column_keys, file_path, sheet_name, sheet_no)
-        with open(path + json_file_name, 'w') as f:
+        with open(path + json_file_name, 'w', encoding='utf-8') as f:
             json.dump(result_list, f, indent=4)
 
 # if __name__ == '__main__':
