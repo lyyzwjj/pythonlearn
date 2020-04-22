@@ -511,3 +511,36 @@ class HShellSort(AbstractSort):
             step = step >> 1
             step_sequence.append(step)
         return step_sequence
+
+
+class ICountSort(AbstractSort):
+    def sort(self):
+        min_index = self.array[0]
+        max_index = self.array[0]
+        # 找到最大值和最小值
+        for each in self.array:
+            if each > max_index:
+                max_index = each
+                continue
+            if each < min_index:
+                min_index = each
+        # 创建counts数组
+        counts = [0] * (max_index - min_index + 1)
+        for each in self.array:
+            counts[each - min_index] += 1
+        last_not_zero_index = 0
+        for index, each in enumerate(counts):
+            if index > 0 and each > 0:
+                each += counts[last_not_zero_index]
+                counts[index] = each
+                last_not_zero_index = index
+        new_array = [None] * (len(self.array))
+        for index in range(len(self.array) - 1, -1, -1):
+            each = self.array[index]
+            #  array中元素找到counts中对应的累积次数 - 1 就是新数组中的索引
+            counts[each - min_index] -= 1
+            new_array[counts[each - min_index]] = each
+        # 数组都是值传递，非引用传递
+        for index, each in enumerate(new_array):
+            self.array[index] = each
+        # self.array = new_array

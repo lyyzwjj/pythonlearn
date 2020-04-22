@@ -23,4 +23,5 @@ if __name__ == '__main__':
     proto_array = json.load(open('../../../resources/array.json', 'r'))
     # test_sort(proto_array, [BubbleSort(), SelectSort(), InsertSort()])
     # test_sort(proto_array, [BBubbleSort(), CSelectSort(), DHeapSort(), EInsertSort(), FMergeSort(), GQuickSort()])
-    test_sort(proto_array, [DHeapSort(), FMergeSort(), GQuickSort(), HShellSort()])
+    test_sort(proto_array, [DHeapSort(), FMergeSort(), GQuickSort(), HShellSort(), ICountSort()])
+    # test_sort(proto_array, [ICountSort()])
