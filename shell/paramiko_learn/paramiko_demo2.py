@@ -61,7 +61,7 @@ if __name__ == "__main__":
     command = sys.argv[1]
     main(host_list, command)
     # /usr/local/apache-zookeeper-3.6.1-bin/bin/zkServer.sh start
-    # /usr/local/apache-zookeeper-3.6.1-bin/bin/zkServer.sh stop
+    # /usr/local/apache-zookeeper-3.6.1-bin/bin/zkServer.sh status
     # /usr/local/kafka_2.13-2.5.0/bin/zookeeper-server-start.sh -daemon /usr/local/kafka_2.13-2.5.0/config/zookeeper.properties
     # /usr/local/kafka_2.13-2.5.0/bin/zookeeper-server-start.sh /usr/local/kafka_2.13-2.5.0/config/zookeeper.properties
     # /usr/local/kafka_2.13-2.5.0/bin/zookeeper-server-stop.sh
