@@ -62,8 +62,10 @@ if __name__ == "__main__":
     main(host_list, command)
     # /usr/local/apache-zookeeper-3.6.1-bin/bin/zkServer.sh start
     # /usr/local/apache-zookeeper-3.6.1-bin/bin/zkServer.sh status
-    # /usr/local/kafka_2.13-2.5.0/bin/zookeeper-server-start.sh -daemon /usr/local/kafka_2.13-2.5.0/config/zookeeper.properties
-    # /usr/local/kafka_2.13-2.5.0/bin/zookeeper-server-start.sh /usr/local/kafka_2.13-2.5.0/config/zookeeper.properties
-    # /usr/local/kafka_2.13-2.5.0/bin/zookeeper-server-stop.sh
-    # /usr/local/apache-zookeeper-3.6.1-bin/bin/zkServer.sh start;/usr/local/kafka_2.13-2.5.0/bin/zookeeper-server-start.sh -daemon /usr/local/kafka_2.13-2.5.0/config/zookeeper.properties
-    # /usr/local/apache-zookeeper-3.6.1-bin/bin/zkServer.sh stop;/usr/local/kafka_2.13-2.5.0/bin/zookeeper-server-stop.sh
+    # JMX_PORT=9988 /usr/local/kafka_2.13-2.5.0/bin/kafka-server-start.sh -daemon /usr/local/kafka_2.13-2.5.0/config/server.properties
+    # kafka-server-start.sh -daemon /usr/local/kafka_2.13-2.5.0/config/server.properties
+    # kafka-server-start.sh -daemon /usr/local/kafka_2.13-2.5.0/config/server.properties
+    # /usr/local/kafka_2.13-2.5.0/bin/kafka-server-start.sh /usr/local/kafka_2.13-2.5.0/config/server.properties
+    # /usr/local/kafka_2.13-2.5.0/bin/kafka-server-stop.sh
+    # /usr/local/apache-zookeeper-3.6.1-bin/bin/zkServer.sh start;/usr/local/kafka_2.13-2.5.0/bin/kafka-server-start.sh -daemon /usr/local/kafka_2.13-2.5.0/config/server.properties
+    # /usr/local/apache-zookeeper-3.6.1-bin/bin/zkServer.sh stop;/usr/local/kafka_2.13-2.5.0/bin/kafka-server-stop.sh
