@@ -25,7 +25,7 @@ def main():
     for t in thread_list:
         t.start()  # 开始执行线程
     for t in thread_list:
-        t.join()  # 挂起线程，到所有线程结束
+        t.join()  # 挂起线程，到所有线程结束  不加join 主进程就直接执行了到了all is down
     print("all is down")
 
 
