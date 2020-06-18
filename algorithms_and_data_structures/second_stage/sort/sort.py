@@ -58,6 +58,13 @@ class AbstractSort:
         return "{:.2f}".format(number / 100000000.0) + "亿"
 
     def is_stable(self):
+        if type(self) == HShellSort:
+            return False
+        if type(self) == ICountSort:
+            return True
+        if type(self) == JRadixSort:
+            return True
+
         # entities = (Entity(score * 10, 10) for score in range(20))
         entities = [Entity(score * 10, 10) for score in range(20)]
         self.p_sort(entities)
@@ -544,3 +551,62 @@ class ICountSort(AbstractSort):
         for index, each in enumerate(new_array):
             self.array[index] = each
         # self.array = new_array
+
+
+class JRadixSort(AbstractSort):
+    def sort(self):
+        # self.sort1()
+        self.sort2()
+
+    def sort1(self):
+        max_ele = max(self.array)
+        counts = [0] * 10
+        new_array = [None] * len(self.array)
+        divider = 1
+        while divider <= max_ele:
+            self.count_sort(divider, counts, new_array)
+            divider *= 10
+
+    def count_sort(self, divider, counts, new_array):
+        for index, each in enumerate(counts):
+            counts[index] = 0
+        for each in self.array:
+            counts[each // divider % 10] += 1
+        last_not_zero_index = 0
+        for index, each in enumerate(counts):
+            if index > 0 and each > 0:
+                each += counts[last_not_zero_index]
+                counts[index] = each
+                last_not_zero_index = index
+        for index in range(len(self.array) - 1, -1, -1):
+            each = self.array[index]
+            #  array中元素找到counts中对应的累积次数 - 1 就是新数组中的索引
+            no = each // divider % 10
+            counts[no] -= 1
+            cursor = counts[no]
+            new_array[cursor] = each
+        # 数组都是值传递，非引用传递
+        for index, each in enumerate(new_array):
+            self.array[index] = each
+        # self.array = new_array
+
+    def sort2(self):
+        max_ele = max(self.array)
+        # 二维桶数组
+        buckets = [[0 for i in range(len(self.array))] for i in range(10)]
+        # 记录每个桶装了多少元素
+        bucket_sizes = [0 for i in range(10)]
+        divider = 1
+        while divider <= max_ele:
+            for i in range(0, len(self.array), 1):
+                ele = self.array[i]
+                no = ele // divider % 10
+                buckets[no][bucket_sizes[no]] = ele
+                bucket_sizes[no] += 1
+            cursor = 0
+            for i in range(0, len(buckets), 1):
+                for j in range(0, bucket_sizes[i], 1):
+                    self.array[cursor] = buckets[i][j]
+                    cursor += 1
+                bucket_sizes[i] = 0
+            divider *= 10
