@@ -2,6 +2,7 @@ import json
 from functools import cmp_to_key
 from algorithms_and_data_structures.second_stage.sort.common import *
 from algorithms_and_data_structures.second_stage.sort.sort import *
+from algorithms_and_data_structures.util.Asserts import Asserts
 
 
 def test_sort(array, sorts):
@@ -24,5 +25,5 @@ if __name__ == '__main__':
     # test_sort(proto_array, [BubbleSort(), SelectSort(), InsertSort()])
     # test_sort(proto_array, [BBubbleSort(), CSelectSort(), DHeapSort(), EInsertSort(), FMergeSort(), GQuickSort()])
     # test_sort(proto_array, [DHeapSort(), FMergeSort(), GQuickSort(), HShellSort(), ICountSort()])
-    test_sort(proto_array, [ICountSort()])
-    # test_sort(proto_array, [ICountSort(), JRadixSort()])
+    # test_sort(proto_array, [ICountSort()])
+    test_sort(proto_array, [ICountSort(), JRadixSort()])
