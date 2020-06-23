@@ -71,6 +71,74 @@ class UnionFindQU(UnionFind):
         return v
 
 
+class UnionFindQUS(UnionFindQU):
+    def __init__(self, capacity):
+        super().__init__(capacity)
+        # self.sizes = [1] * capacity
+        self.sizes = [1 for _ in range(capacity)]
+
+    def union(self, v1, v2):
+        p1 = self.find(v1)
+        p2 = self.find(v2)
+        if p1 == p2:
+            return
+        if self.sizes[p1] < self.sizes[p2]:
+            self.parents[p1] = p2
+            self.sizes[p2] += self.sizes[p1]
+        else:
+            self.parents[p2] = p1
+            self.sizes[p1] += self.sizes[p2]
+
+
+class UnionFindQUR(UnionFindQU):
+    def __init__(self, capacity):
+        super().__init__(capacity)
+        # self.sizes = [1] * capacity
+        self.ranks = [1 for _ in range(capacity)]
+
+    def union(self, v1, v2):
+        p1 = self.find(v1)
+        p2 = self.find(v2)
+        if p1 == p2:
+            return
+        if self.ranks[p1] < self.ranks[p2]:
+            self.parents[p1] = p2
+        elif self.ranks[p1] > self.ranks[p2]:
+            self.parents[p2] = p1
+        else:
+            self.parents[p1] = p2
+            self.ranks[p2] += 1
+
+
+class UnionFindQURPC(UnionFindQUR):
+    def find(self, v):
+        self.range_check(v)
+        if v != self.parents[v]:
+            self.parents[v] = self.find(self.parents[v])
+        return self.parents[v]
+
+
+# 使路径上的每隔一个节点就指向其祖父节点
+class UnionFindQURPH(UnionFindQUR):
+    def find(self, v):
+        self.range_check(v)
+        while v != self.parents[v]:
+            self.parents[v] = self.parents[self.parents[v]]
+            v = self.parents[v]
+        return v
+
+
+# 使路径上的所有节点都指其祖父节点
+class UnionFindQURPS(UnionFindQUR):
+    def find(self, v):
+        self.range_check(v)
+        while v != self.parents[v]:
+            parent = self.parents[v]
+            self.parents[v] = self.parents[self.parents[v]]
+            v = parent
+        return v
+
+
 def execute_method(uf):
     for c in range(UnionMain.count):
         uf.union(random.randint(0, UnionMain.count - 1), random.randint(0, UnionMain.count - 1))
@@ -80,12 +148,17 @@ def execute_method(uf):
 
 class UnionMain:
     # count = 100000
-    count = 15000
+    count = 100000
 
     @classmethod
     def main(cls):
-        UnionMain.test_time(UnionFindQF(UnionMain.count))
-        UnionMain.test_time(UnionFindQU(UnionMain.count))
+        # UnionMain.test_time(UnionFindQF(UnionMain.count))
+        # UnionMain.test_time(UnionFindQU(UnionMain.count))
+        UnionMain.test_time(UnionFindQUS(UnionMain.count))
+        UnionMain.test_time(UnionFindQUR(UnionMain.count))
+        UnionMain.test_time(UnionFindQURPC(UnionMain.count))
+        UnionMain.test_time(UnionFindQURPH(UnionMain.count))
+        UnionMain.test_time(UnionFindQURPS(UnionMain.count))
 
     @classmethod
     def test_time(cls, uf):
