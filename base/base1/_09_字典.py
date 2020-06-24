@@ -3,5 +3,6 @@ dict2 = {'性别': '男'}
 dict1.update(dict2)
 print(len(dict1))
 print(dict1)
+print(dict1.__contains__('姓名'))
 for key in dict1:
     print('%s-%s' % (key, dict1[key]))

@@ -139,6 +139,66 @@ class UnionFindQURPS(UnionFindQUR):
         return v
 
 
+class GenericUnionFind:
+    def __init__(self):
+        # key: v  value: Node
+        self.nodes = {}
+
+    class Node:
+        def __init__(self, value):
+            self.value = value
+            self.parent = self
+            self.rank = 1
+
+    def make_set(self, v):
+        if not self.nodes.__contains__(v):
+            self.nodes[v] = self.Node(v)
+
+    def union(self, v1, v2):
+        """ 合并v1、v2所属集合
+        :param v1:
+        :param v2:
+        :return:
+        """
+        p1 = self.find_node(v1)
+        p2 = self.find_node(v2)
+        if p1 is None or p2 is None or p1 == p2:
+            return
+        # 树矮的挂到树高的下面
+        if p1.rank < p2.rank:
+            p1.parent = p2
+        elif p1.rank > p2.rank:
+            p2.parent = p1
+        else:
+            p1.parent = p2
+            p2.rank += 1
+
+    def find_node(self, v):
+        """ 查找v所属集合(根节点)
+        :param v:
+        :return:
+        """
+        node = self.nodes.get(v)
+        if node is None:
+            return None
+        while node.value != node.parent.value:
+            node.parent = node.parent.parent
+            node = node.parent
+        return node
+
+    def find(self, v):
+        node = self.find_node(v)
+        return None if node is None else node.value
+
+    def is_same(self, v1, v2):
+        """ 检查v1、v2是否属于同一个集合
+        :param v1:
+        :param v2:
+        :return:
+        """
+        return self.find(v1) == self.find(v2)
+
+
 def execute_method(uf):
     for c in range(UnionMain.count):
         uf.union(random.randint(0, UnionMain.count - 1), random.randint(0, UnionMain.count - 1))
@@ -159,6 +219,10 @@ class UnionMain:
         UnionMain.test_time(UnionFindQURPC(UnionMain.count))
         UnionMain.test_time(UnionFindQURPH(UnionMain.count))
         UnionMain.test_time(UnionFindQURPS(UnionMain.count))
+        guf = GenericUnionFind()
+        for i in range(UnionMain.count):
+            guf.make_set(i)
+        UnionMain.test_time(guf)
 
     @classmethod
     def test_time(cls, uf):

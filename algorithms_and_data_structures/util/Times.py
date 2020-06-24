@@ -26,6 +26,7 @@ class Times:
     def test(cls, title, target, *args):
         if target is None:
             return
+        title = "" if title is None else ("【" + title + "】")
         print(title)
         print("开始: " + Times.format_time(3))
         begin = time.time()
@@ -33,5 +34,6 @@ class Times:
         task.start()
         task.join()
         end = time.time()
-        print("耗时: " + str(end - begin) + "秒")
+        # print("耗时: " + str(end - begin) + "秒")
+        print("耗时: %.3f秒" % (end - begin))
         print("-------------------------------------")
