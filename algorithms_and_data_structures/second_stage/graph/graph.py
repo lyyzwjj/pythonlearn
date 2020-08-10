@@ -1,7 +1,5 @@
 import abc
 
-from algorithms_and_data_structures.util.Set import *
-
 
 class AbstractGraph:
     @abc.abstractmethod
@@ -44,7 +42,7 @@ class AbstractGraph:
 class ListGraph(AbstractGraph):
     def __init__(self):
         self.__vertices = {}
-        self.__edges = HashSet()
+        self.__edges = set()
 
     def edges_size(self):
         return len(self.__edges)
@@ -74,8 +72,8 @@ class ListGraph(AbstractGraph):
     class Vertex:
         def __init__(self, value):
             self.value = value
-            self.inEdges = HashSet()
-            self.outEdges = HashSet()
+            self.inEdges = set()
+            self.outEdges = set()
 
     class Edge:
         def __init__(self, ori, dest, weight=None):
