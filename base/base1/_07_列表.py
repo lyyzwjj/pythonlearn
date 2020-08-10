@@ -23,13 +23,12 @@ for item in name_list:
 
 name_list = ['你好', 33, '小刘', 33, 33]
 list1 = [1, 2, 3]
-#append会将整个list1当一个参数加进列表
+# append会将整个list1当一个参数加进列表
 name_list.append(list1)
 print(name_list)
 
-
-#遍历方法
-colours = ["red","green","blue"]
+# 遍历方法
+colours = ["red", "green", "blue"]
 for colour in colours:
     print(colour)
 
@@ -45,5 +44,18 @@ for i in enumerate(colours):
 for i in iter(colours):
     print(i)
 
+#  边遍历 边删除
+a = [1, 2, 3, 4, 5, 6, 7, 8]
+b = filter(lambda x: x > 5, a)
+print(list(b))
 
+a = [1, 2, 3, 4, 5, 6, 7, 8]
+b = [i for i in a if i > 5]
+print(b)
 
+# 去重的list  set
+s = set()
+s.add(1)
+s.add(2)
+s.pop(1)  # 如果key不存在会报错
+s.discard(3)  # 如果key不存在不会报错
