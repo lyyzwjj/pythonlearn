@@ -1,4 +1,5 @@
 import abc
+from queue import Queue
 
 
 class AbstractGraph:
@@ -67,22 +68,22 @@ class ListGraph(AbstractGraph):
             dest_vertex = ListGraph.__Vertex(dest)
             self.__vertices[dest] = dest_vertex
         edge = ListGraph.__Edge(ori_vertex, dest_vertex, weight)
-        ori_vertex.outEdges.discard(edge)
-        dest_vertex.inEdges.discard(edge)
+        ori_vertex.out_edges.discard(edge)
+        dest_vertex.in_edges.discard(edge)
         self.__edges.discard(edge)
-        ori_vertex.outEdges.add(edge)
-        dest_vertex.inEdges.add(edge)
+        ori_vertex.out_edges.add(edge)
+        dest_vertex.in_edges.add(edge)
         self.__edges.add(edge)
 
     def remove_vertex(self, v):
         vertex = self.__vertices.pop(v, None)
         if vertex is not None:
-            for edge in vertex.outEdges:
-                edge.dest.inEdges.remove(edge)
+            for edge in ListGraph.__set_sort(vertex.out_edges):
+                edge.dest.in_edges.remove(edge)
                 self.__edges.discard(edge)
 
-            for edge in vertex.inEdges:
-                edge.ori.outEdges.remove(edge)
+            for edge in ListGraph.__set_sort(vertex.in_edges):
+                edge.ori.out_edges.remove(edge)
                 self.__edges.discard(edge)
 
     def remove_edge(self, ori, dest):
@@ -93,33 +94,56 @@ class ListGraph(AbstractGraph):
         if dest_vertex is None:
             return
         edge = ListGraph.__Edge(ori_vertex, dest_vertex)
-        ori_vertex.outEdges.discard(edge)
-        dest_vertex.inEdges.discard(edge)
+        ori_vertex.out_edges.discard(edge)
+        dest_vertex.in_edges.discard(edge)
         self.__edges.discard(edge)
 
     def bfs(self, begin):
-        pass
+        begin_vertex = self.__vertices.get(begin)
+        if begin_vertex is None:
+            return
+        visited_vertices = set()
+        visited_vertices.add(begin_vertex)
+        queue = Queue()
+        queue.put(begin_vertex)
+        while not queue.empty():
+            vertex = queue.get()
+            print(vertex.value)
+            for edge in ListGraph.__set_sort(vertex.out_edges):
+                if not visited_vertices.__contains__(edge.dest):
+                    queue.put(edge.dest)
+                    visited_vertices.add(edge.dest)
 
     def dfs(self, begin):
-        pass
+        begin_vertex = self.__vertices.get(begin)
+        if begin_vertex is None:
+            return
+        self.dfs_recursion(begin_vertex, set())
+
+    def dfs_recursion(self, vertex, visited_vertices):
+        print(vertex.value)
+        visited_vertices.add(vertex)
+        for edge in ListGraph.__set_sort(vertex.out_edges):
+            if not visited_vertices.__contains__(edge.dest):
+                self.dfs_recursion(edge.dest, visited_vertices)
 
     def print(self):
         print("vertices==================================================")
         # print(lambda v, vertex: (
         #     print(v),
         #     print("in---------------------"),
-        #     print(vertex.inEdges),
+        #     print(vertex.in_edges),
         #     print("out---------------------"),
-        #     print(vertex.inEdges)
+        #     print(vertex.in_edges)
         # ), self.__vertices)
         for v, vertex in self.__vertices.items():
             print(v)
             print("in---------------------")
-            # print(vertex.inEdges)
-            ListGraph.__print_set_edges(vertex.inEdges)
+            # print(vertex.in_edges)
+            ListGraph.__print_set_edges(vertex.in_edges)
             print("out---------------------")
-            # print(vertex.outEdges)
-            ListGraph.__print_set_edges(vertex.outEdges)
+            # print(vertex.out_edges)
+            ListGraph.__print_set_edges(vertex.out_edges)
         print("\n" + "edges==================================================")
         # print(lambda edge: print(edge), self.__edges)
         for edge in self.__edges:
@@ -136,11 +160,23 @@ class ListGraph(AbstractGraph):
 
         print(string)
 
+    @staticmethod
+    def __set_sort(edges):
+        """
+        强制给edges set排序
+        :param edges:
+        :return:
+        """
+        edges_list = list(edges)
+        # TODO  edges set排序规则待优化
+        edges_list.sort(key=lambda edge: edge.ori.value + edge.dest.value)
+        return edges_list
+
     class __Vertex:
         def __init__(self, value):
             self.value = value
-            self.inEdges = set()
-            self.outEdges = set()
+            self.in_edges = set()
+            self.out_edges = set()
 
         def __hash__(self):
             return hash(self.value) if self.value is not None else 0
