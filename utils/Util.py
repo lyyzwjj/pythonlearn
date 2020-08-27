@@ -91,6 +91,7 @@ def def5():
     column_keys.append(column_key2)
     ExcelUtil.excel_file2json_file(column_keys, '../resources/excel/省市区国籍.xlsx', 'nation.json', sheet_name='国籍')
 
+
 def def6():
     column_keys = []
     column_key1 = ColumnKey("provinceCode", 1, "省代码")
@@ -133,10 +134,12 @@ def list2excel_file(file_name, column_keys_list, json_file_path=None, data=None)
     if data is None and json_file_path is not None:
         data = json.load(open(json_file_path, encoding='utf-8'))
     eu = ExcelUtil()
+    data.sort(key=lambda d: d['catid'], reverse=True)
     eu.list2excel_file(column_keys, data, file_name)
 
 
 if __name__ == '__main__':
     # new_column_keys_list = [["userid", "用户id"], ["first_login_time", "首次登陆时间"]]
     # list2excel_file("第三方机构邀请用户表", new_column_keys_list, "../resources/excel/mdmuser.json")
-    def8()
+    new_column_keys_list = [["catid"], ["title"], ["path"]]
+    list2excel_file("interface", new_column_keys_list, "../resources/excel/interface.json")
