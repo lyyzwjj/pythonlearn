@@ -1,0 +1,1 @@
+ python3 web_server_8.py 7890 web_server_8_mini_frame:application
