@@ -1,6 +1,6 @@
 import json
-from json import JSONEncoder
-
+from datetime import date
+from datetime import datetime
 
 
 def read_file(path):
@@ -8,7 +8,16 @@ def read_file(path):
     return file.readlines()
 
 
-class MyEncoder(JSONEncoder):
+# class MyEncoder(json.JSONEncoder):
+#     def default(self, o):
+#         if isinstance(o, datetime):
+#             return o.strftime('%Y-%m-%d %H:%M:%S')
+#         elif isinstance(o, date):
+#             return o.strftime('%Y-%m-%d')
+#         else:
+#             return o.__dict__
+
+class MyEncoder(json.JSONEncoder):
     def default(self, o):
         return o.__dict__
 
@@ -25,7 +34,6 @@ def obj2json_str(obj, encoder):
     return json.dumps(obj, cls=encoder)
 
 
-
 def main():
     l = []
     with open("../../resources/excel/userids.json") as f_obj:
@@ -35,5 +43,3 @@ def main():
     with open("../../resources/excel/userids1.json", "w") as f_obj:
         json.dump(l, f_obj)
     print(l)
-
-
